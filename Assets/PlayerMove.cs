@@ -19,11 +19,14 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKey("d"))
         {
-             box.AddForce(500*Time.deltaTime, 0, 0);
+             box.velocity = new Vector3(25,0,0);
         }
-        if (Input.GetKey("a"))
+        else if (Input.GetKey("a"))
         {
-            box.AddForce(-500*Time.deltaTime, 0, 0);
+            box.velocity = new Vector3(-25,0,0);
+        }
+        else{
+            box.velocity = new Vector3(0,0,0);
         }
        
     
