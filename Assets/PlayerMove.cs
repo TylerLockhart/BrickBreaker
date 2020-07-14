@@ -17,13 +17,13 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w"))
+        if (Input.GetKey("d"))
         {
-             box.AddForce(0, 0, 500*Time.deltaTime);
+             box.AddForce(500*Time.deltaTime, 0, 0);
         }
-        if (Input.GetKey("s"))
+        if (Input.GetKey("a"))
         {
-            box.AddForce(0, 0, -500*Time.deltaTime);
+            box.AddForce(-500*Time.deltaTime, 0, 0);
         }
        
     
