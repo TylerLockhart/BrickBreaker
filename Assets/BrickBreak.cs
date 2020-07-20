@@ -17,7 +17,11 @@ public class BrickBreak : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider collision){
+    /*void OnTriggerEnter(Collider collision){
+        Destroy(gameObject);
+    }*/
+    
+    void OnCollisionEnter(Collision collision){
         Destroy(gameObject);
     }
 }
