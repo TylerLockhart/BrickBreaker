@@ -9,30 +9,40 @@ public class ballmove : MonoBehaviour
     public float verticalVector = 0f;
     public float horizontalVector = 0f;
     
-    //handle collisions with bricks; compatible with OnTriggerEnter
-    /*void brickBounce (Collider other){
-        GameObject brick = other.gameObject;
-        Transform bTrans = brick.transform;
-        //Debug.Log(bTrans.position.x); //checking structure of Transform objects
-        Vector3 brickLocation = new Vector3(bTrans.position.x, bTrans.position.x, bTrans.position.z); // this line is the one that breaks
-        //Debug.Log(brickLocation.z - rb.gameObject.transform.position.z); //check distance between z coordinates at collision
-        //Debug.Log(rb.gameObject.transform.position.z); Left in for reference purposes
-        float differenceZ = brickLocation.z - rb.gameObject.transform.position.z;
-        Debug.Log(differenceZ);
-        if(differenceZ < 0){
-            differenceZ *= -1;
-        }
-        if(differenceZ  > 1){
-            verticalVector *= -1;
-            rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
-        }
-        else{
-            horizontalVector *= -1;
-            rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
-        }
-    }*/
+    //handles collisions with bricks and walls; compatible with on collision enter
     void brickBounce(Collision col){
+        float verticalDiff = col.GetContact(0).point.z - col.collider.gameObject.transform.position.z;
+        float horizontalDiff = col.GetContact(0).point.x - col.collider.gameObject.transform.position.x;
+        Debug.Log(verticalDiff);
+        Debug.Log(horizontalDiff);
+        //vertical collisions
+        if (verticalDiff == 0.5){
+            if (verticalVector < 0){
+                verticalVector *= -1;
+                rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
+            }
+        }
+        if (verticalDiff == -0.5){
+            if (verticalVector > 0){
+                verticalVector *= -1;
+                rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
+            }
+        }
         
+        //side collisions
+        if (horizontalDiff == 1.5){
+            if (horizontalVector < 0){
+                horizontalVector *= -1;
+                rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
+            }
+            
+        }
+        if (horizontalDiff == -1.5){
+            if (horizontalVector > 0){
+                horizontalVector *= -1;
+                rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
+            }
+        }
     }
     
     
@@ -40,8 +50,8 @@ public class ballmove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        verticalVector = 10;
-        horizontalVector = 0;
+        verticalVector = 3;
+        horizontalVector = -3;
         rb.velocity = new Vector3(horizontalVector,0,verticalVector);       
     }
 
@@ -51,25 +61,11 @@ public class ballmove : MonoBehaviour
 
     }
 
-    /*void OnTriggerEnter(Collider other){
-        //handle brick collisions
-        if (other.tag == "Brick")
-        {
-            //verticalVector *= -1;
-            //rb.velocity = new Vector3(horizontalVector, 0 , verticalVector);
-            brickBounce(other);
-        }
-        //handle paddle collisions
-        if(other.tag == "Paddle"){
-            verticalVector *= -1;
-            rb.velocity = new Vector3(horizontalVector, 0 , verticalVector);
-        }
-    }*/
     void OnCollisionEnter(Collision col){
-        Debug.Log("On Collision Enter");
-        Debug.Log(col.gameObject.name);
-        //Debug.Log(col.GetContact[0]);
-        verticalVector *= -1;
-        rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
+        if (col.collider.gameObject.tag == "Brick")
+        {
+            brickBounce(col);
+        }
+        
     }
 }
