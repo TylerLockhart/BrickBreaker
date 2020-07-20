@@ -22,6 +22,9 @@ public class BrickBreak : MonoBehaviour
     }*/
     
     void OnCollisionEnter(Collision collision){
-        Destroy(gameObject);
+        if (collision.collider.gameObject.name == "Ball")
+        {
+            Destroy(gameObject);
+        }
     }
 }
