@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ballmove : MonoBehaviour
 {
-    //rigidbody collider and directional component vectors
+//rigidbody collider and directional component vectors
     public Rigidbody rb;
     public float verticalVector = 0f;
     public float horizontalVector = 0f;
+    public float speed = 10f;
     
-    //handles collisions with bricks and walls; compatible with on collision enter
+//handles collisions with bricks and walls; compatible with on collision enter
     void brickBounce(Collision col){
         float verticalDiff = col.GetContact(0).point.z - col.collider.gameObject.transform.position.z;
         float horizontalDiff = col.GetContact(0).point.x - col.collider.gameObject.transform.position.x;
@@ -45,12 +46,12 @@ public class ballmove : MonoBehaviour
         }
     }
 
-    //handles collisions with the paddle
+//handles collisions with the paddle
     void paddleBounce(Collision col){
         float verticalDiff = col.GetContact(0).point.z - col.collider.gameObject.transform.position.z;
         float horizontalDiff = col.GetContact(0).point.x - col.collider.gameObject.transform.position.x;
-        
-        //handle side and corner collisions first
+        speed += 1f;
+//handle side and corner collisions first
         if (horizontalDiff == 3){
             if (horizontalVector < 0){
                 horizontalVector *= -1;
@@ -64,27 +65,27 @@ public class ballmove : MonoBehaviour
                 rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
             }
         }
-        //handle collisions with the top of the paddle
+//handle collisions with the top of the paddle
         horizontalDiff *= -1; //Some band aid nonsense
         if(Mathf.Abs(horizontalDiff) < 3){
             float radianOfCollision = horizontalDiff/4*90*Mathf.Deg2Rad + Mathf.PI/2;
             Debug.Log(radianOfCollision);
-            verticalVector = 10 * Mathf.Sin(radianOfCollision);
-            horizontalVector = 10 * Mathf.Cos(radianOfCollision);
+            verticalVector = speed * Mathf.Sin(radianOfCollision);
+            horizontalVector = speed * Mathf.Cos(radianOfCollision);
             rb.velocity = new Vector3(horizontalVector, 0, verticalVector);
         }
     }
     
     
-    // Start is called before the first frame update
+// Start is called before the first frame update
     void Start()
     {
-        verticalVector = 10;
+        verticalVector = speed;
         horizontalVector = 0;
         rb.velocity = new Vector3(horizontalVector,0,verticalVector);       
     }
 
-    // Update is called once per frame
+// Update is called once per frame
     void Update()
     {
 
